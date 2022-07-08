@@ -5,7 +5,7 @@ import { writeJSON } from './writefile'; './writefile'
 
 var args = process.argv.slice(2);
 
-export async function getposts(username: string) {
+export async function getPosts(username: string) {
   const ig = new IgApiClient();
   ig.state.generateDevice("acer-i7");
   let allPosts: UserFeedResponseItemsItem[] = [];
