@@ -17,13 +17,13 @@ const targetUser = await ig.user.searchExact(username.toString());
 const postsFeed =  ig.feed.user(targetUser.pk)
 const postsFirstPage = await postsFeed.items();
 allPosts=(allPosts.concat(postsFirstPage));
-console.log('Página 1')
+console.log('Posts page 1')
 var pageNumber = 2;
 while (postsFeed.isMoreAvailable()) {
     try {
         const nextPage = await postsFeed.items();
         allPosts=allPosts.concat(nextPage);
-        console.log(`Página ${pageNumber}`)
+        console.log(`Posts page ${pageNumber}`)
         pageNumber++
         
     } catch (error) {

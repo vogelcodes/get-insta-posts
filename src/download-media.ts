@@ -83,7 +83,7 @@ export async function downloadMedia(username: string){
               
               writeStream.on("finish", () => {
                 writeStream.close();
-                console.log(filename+extension+"Download Completed");
+                console.log(filename+'.'+extension+" Download Completed");
               });
   });
   }
