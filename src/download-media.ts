@@ -7,11 +7,15 @@ import { writeJSON } from './writefile'; './writefile'
 
 export async function downloadMedia(username: string){
   
-  function checkExistentFile(filename: string, username: string, path: string){
-    if (fs.readdirSync(`./output/${username}${path}`).findIndex(f => f.startsWith(filename))==-1){
-      return false
+  function checkExistentFile(filename: string, username: string, path: string, extension?: string){
+    let nameToSearch = filename
+    if (extension){
+      nameToSearch = filename+"."+extension
     }
-    return true
+      if (fs.readdirSync(`./output/${username}${path}`).findIndex(f => f.startsWith(nameToSearch))==-1){
+        return false
+      }
+      return true
   }
   
   async function downloadMedia(mediaURL: string, extension: string, filename: string, username: string, savingDir: string) {
@@ -95,7 +99,7 @@ export async function downloadMedia(username: string){
         case 1:
           mediaURL = post.image_versions2.candidates[0].url
           extension = 'jpg'  
-          if (!checkExistentFile(post.pk, username, savingDir)){
+          if (!checkExistentFile(post.pk, username, savingDir, extension)){
             await downloadMedia(mediaURL, extension, post.pk, username, savingDir)
           }
           break;
@@ -108,7 +112,7 @@ export async function downloadMedia(username: string){
                 case 1:
                   mediaURL = media.image_versions2.candidates[0].url
                   extension = 'jpg'
-                  if (!checkExistentFile(post.pk+'-'+index, username, savingDir)){
+                  if (!checkExistentFile(post.pk+'-'+index, username, savingDir, extension)){
                      await downloadMedia(mediaURL, extension, post.pk+'-'+index, username, savingDir)
                   }
                   break;
