@@ -15,6 +15,7 @@ export async function getSubs(username: string) {
   type Data = UserFeedResponseItemsItem[]
 const loggedInUser = await ig.account.login(process.env.USERNAME || "" ,process.env.PASSWORD || "");
 const targetUser = await ig.user.searchExact(username.toString());
+const followerQty = targetUser.follower_count
 const followFeed =  ig.feed.accountFollowers(targetUser.pk);
 const friendsFirstPage = await followFeed.items();
 allFollowers=(allFollowers.concat(friendsFirstPage));
@@ -23,7 +24,7 @@ var pageNumber = 2;
 async function interval(ms: number){
 
 }
-while (followFeed.isMoreAvailable()) {
+while (followFeed.isMoreAvailable() && pageNumber < 100) {
     const wait = await setTimeout(1000)
     try {
         const nextPage = await followFeed.items();

@@ -46,28 +46,14 @@ export async function downloadMedia(username: string){
   
   
   let files = fs.readdirSync(`./output/${username}/`)
-  let subfiles = fs.readdirSync(`./output/${username}/subs/`)
   let options = files.filter(f => f.endsWith('json'))
-  let suboptions = subfiles.filter(f => f.endsWith('json'))
   let fileToRead = options.length - 1
-  let subfileToRead = options.length - 1
   console.log(options[fileToRead])
-  console.log(suboptions[subfileToRead])
   let data = fs.readFileSync(`./output/${username}/${options[fileToRead]}`)
-  let subdata = fs.readFileSync(`./output/${username}/subs/${suboptions[subfileToRead]}`)
   fs.mkdirSync(`./output/${username}/posts`, { recursive: true })
   
   
-  let subs: AccountFollowersFeedResponseUsersItem[] = JSON.parse(subdata.toString())
   let posts: UserFeedResponseItemsItem[] = JSON.parse(data.toString())
-  for await (let sub of subs){
-    let follower = sub.username
-    let url = sub.profile_pic_url
-    if(!checkExistentFile(follower+'.jpg', username, '/subs/')){
-      await downloadMedia(url, 'jpg', follower, username,'/subs/')
-    }
-    
-  }
   for await (let post of posts) {
     let postDate = new Date(post.taken_at*1000)
     let filename = postDate.toISOString()
